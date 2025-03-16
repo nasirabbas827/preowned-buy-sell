@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Categories | Seller{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Manage Categories</h1>
+    <a href="{% url 'add_category' %}" class="btn btn-primary mb-3">Add Category</a>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Category Name</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.category_name }}</td>
+                <td>{{ category.created_at }}</td>
+                <td>
+                    <a href="{% url 'edit_category' category.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_category' category.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

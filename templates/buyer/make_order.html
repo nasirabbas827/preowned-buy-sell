@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Make Order{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+
+    <h1 class="text-center">Order: {{ product.title }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="payment_method" class="form-label">Payment Method</label>
+            {{ form.payment_method }}
+        </div>
+        <div class="mb-3">
+            <label for="delivery_address" class="form-label">Delivery Address</label>
+            {{ form.delivery_address }}
+        </div>
+        <button type="submit" class="btn btn-success">Confirm Order</button>
+        <a href="{% url 'buyer_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}

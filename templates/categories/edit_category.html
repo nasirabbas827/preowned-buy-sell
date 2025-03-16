@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Edit Category{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+
+    <h1 class="mb-4">Edit Category</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="category_name" class="form-label">Category Name</label>
+            {{ form.category_name }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}

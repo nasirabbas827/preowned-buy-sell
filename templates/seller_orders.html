@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Your Orders</h1>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-dark m-2" onclick="window.print()">Print</button>
+    </div>
+    
+
+    <!-- Filter Orders -->
+    <form method="GET" class="mb-3">
+        <label for="status">Filter by Status:</label>
+        <select name="status" id="status" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Completed" {% if selected_status == 'Completed' %}selected{% endif %}>Completed</option>
+            <option value="Canceled" {% if selected_status == 'Canceled' %}selected{% endif %}>Canceled</option>
+        </select>
+    </form>
+
+    <table class="table table-bordered">
+        
+        <thead class="table-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Buyer</th>
+                <th>Order Status</th>
+                <th>Ordered At</th>
+                <th>Transaction</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.product.title }}</td>
+                <td>{{ order.buyer.username }}</td>
+                <td>{{ order.order_status }}</td>
+                <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="{% url 'order_transactions' order.order_id %}" class="btn btn-sm btn-info">View Transaction</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No orders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">My Orders</h1>
+
+    {% if orders %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Seller</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Delivery Address</th>
+                <th>Status</th>
+                <th>Ordered At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.product.title }}</td>
+                <td>{{ order.seller.username }}</td>
+                <td>{{ order.payment_method }}</td>
+                <td>
+                    <span class="badge 
+                        {% if order.payment_status == 'Unpaid' %} bg-danger 
+                        {% elif order.payment_status == 'Paid' %} bg-success {% endif %}">
+                        {{ order.payment_status }}
+                    </span>
+                </td>
+                <td>{{ order.delivery_address }}</td>
+                <td>
+                    <span class="badge 
+                        {% if order.order_status == 'Pending' %} bg-warning 
+                        {% elif order.order_status == 'Completed' %} bg-success 
+                        {% elif order.order_status == 'Canceled' %} bg-danger {% endif %}">
+                        {{ order.order_status }}
+                    </span>
+                </td>
+                <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    {% if order.order_status == 'Pending' and order.payment_status == 'Unpaid' %}
+                        <!-- Delete Order Button -->
+                        <form method="POST" action="{% url 'delete_order' order.order_id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Cancel
+                            </button>
+                        </form>
+
+                        <!-- Pay Now Button (Only if NOT COD) -->
+                        {% if order.payment_method != 'COD' %}
+                            <button class="btn btn-success btn-sm mt-2" id="pay-{{ order.order_id }}">
+                                <i class="fas fa-credit-card"></i> Pay Now
+                            </button>
+
+                            <script src="https://checkout.stripe.com/checkout.js"></script>
+                            <script>
+                                document.getElementById("pay-{{ order.order_id }}").addEventListener("click", function() {
+                                    var stripe = StripeCheckout.configure({
+                                        key: "pk_test_51PQinLRrUKhdzOsDnpHkYJbi0HZIsF9xOVIcPZtsAr4nbH5h1p3o1jblMCPoB0glvFG3o1pbxQZLSiKRHgvuZRMt009qg1bTkq",
+                                        locale: "auto",
+                                        token: function(token) {
+                                            window.location.href = "{% url 'payment_success' order.order_id %}";
+                                        }
+                                    });
+
+                                    stripe.open({
+                                        name: "Secure Payment",
+                                        description: "{{ order.product.title }}",
+                                        amount: {{ order.product.price|floatformat:2 }} * 100
+                                    });
+                                });
+                            </script>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="text-center">No orders found.</p>
+    {% endif %}
+</div>
+{% endblock %}

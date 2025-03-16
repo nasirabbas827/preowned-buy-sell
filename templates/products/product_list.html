@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Your Products</h1>
+    <a href="{% url 'product_add' %}" class="btn btn-success mb-3">Add Product</a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Price ($)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                        No Image
+                        {% endif %}
+                    </td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.description|truncatechars:50 }}</td>
+                    <td>${{ product.price }}</td>
+                    <td>{{ product.status }}</td>
+                    <td>
+                        <a href="{% url 'product_edit' product.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'product_delete' product.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No products added yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
