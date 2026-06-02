@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-eemw60b%yofj_uo(#18go)m*pez-m+a75wg)!#!z!v)b**q72h'
+SECRET_KEY = "YOUR_OWN_API_KEY"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -127,4 +127,4 @@ LOGIN_URL = 'user_login'
 
 
 STRIPE_PUBLIC_KEY = "pk_test_51PQinLRrUKhdzOsDnpHkYJbi0HZIsF9xOVIcPZtsAr4nbH5h1p3o1jblMCPoB0glvFG3o1pbxQZLSiKRHgvuZRMt009qg1bTkq"
-STRIPE_SECRET_KEY = "sk_test_51PQinLRrUKhdzOsDK666N2V91NnsWKtb8mcYyrYwhPgDEheMluMygqAx0MnrgRTWyVwjMvRKsUjpxuyGvFFfuhKE00cD9K5EtD"
+STRIPE_SECRET_KEY = "YOUR_OWN_API_KEY"
